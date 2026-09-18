@@ -130,7 +130,7 @@ A seed script automatically creates an administrator account and synthetic ecolo
 
 1. **Clone Repository**:
    ```bash
-   git clone https://github.com/your-org/darukaa-earth.git
+   git clone https://github.com/ahsan-zamil/darukaa-earth.git
    cd darukaa-earth
    ```
 

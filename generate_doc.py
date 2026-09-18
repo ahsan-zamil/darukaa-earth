@@ -97,7 +97,7 @@ add_subtitle("Carbon & Biodiversity Project Intelligence Platform — Hackathon 
 # Section 1: Submission Links & Details
 add_heading_1("1. Submission Links & Key Credentials")
 
-add_paragraph("[Insert Your GitHub Repository URL Here - e.g. https://github.com/your-username/darukaa-earth]", "GitHub Repository Link: ")
+add_paragraph("https://github.com/ahsan-zamil/darukaa-earth", "GitHub Repository Link: ")
 add_paragraph("https://fresh-adults-read.loca.lt", "Live Demo URL: ")
 add_paragraph("demo@darukaa.earth", "Administrator Demo Email: ")
 add_paragraph("Demo@12345", "Administrator Demo Password: ")
