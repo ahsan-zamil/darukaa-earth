@@ -37,3 +37,8 @@ frontend/coverage/
 *.swo
 .DS_Store
 Thumbs.db
+
+# Submission docs & generator scripts
+*.docx
+generate_doc.py
+
