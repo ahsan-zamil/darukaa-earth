@@ -1,7 +1,6 @@
 import docx
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
@@ -74,6 +73,44 @@ def add_paragraph(text, bold_prefix="", italic=False):
     p.paragraph_format.space_after = Pt(4)
     return p
 
+def add_link_paragraph(label, url):
+    p = doc.add_paragraph()
+    r_pre = p.add_run(label)
+    r_pre.font.name = 'Arial'
+    r_pre.font.size = Pt(10.5)
+    r_pre.font.bold = True
+    r_pre.font.color.rgb = RGBColor(30, 41, 59)
+
+    # XML Hyperlink in docx
+    part = p.part
+    r_id = part.relate_to(url, docx.opc.constants.RELATIONSHIP_TYPE.HYPERLINK, is_external=True)
+
+    hyperlink = OxmlElement('w:hyperlink')
+    hyperlink.set(qn('r:id'), r_id)
+
+    new_run = OxmlElement('w:r')
+    rPr = OxmlElement('w:rPr')
+
+    c = OxmlElement('w:color')
+    c.set(qn('w:val'), '0284C7') # Blue color
+    rPr.append(c)
+
+    u = OxmlElement('w:u')
+    u.set(qn('w:val'), 'single') # Underline
+    rPr.append(u)
+
+    b = OxmlElement('w:b') # Bold
+    rPr.append(b)
+
+    new_run.append(rPr)
+    text_node = OxmlElement('w:t')
+    text_node.text = url
+    new_run.append(text_node)
+    hyperlink.append(new_run)
+    p._p.append(hyperlink)
+    p.paragraph_format.space_after = Pt(4)
+    return p
+
 def add_bullet(text, bold_prefix=""):
     p = doc.add_paragraph(style='List Bullet')
     if bold_prefix:
@@ -97,8 +134,8 @@ add_subtitle("Carbon & Biodiversity Project Intelligence Platform — Hackathon 
 # Section 1: Submission Links & Details
 add_heading_1("1. Submission Links & Key Credentials")
 
-add_paragraph("https://github.com/ahsan-zamil/darukaa-earth", "GitHub Repository Link: ")
-add_paragraph("https://fresh-adults-read.loca.lt", "Live Demo URL: ")
+add_link_paragraph("GitHub Repository Link: ", "https://github.com/ahsan-zamil/darukaa-earth")
+add_link_paragraph("Live Demo URL: ", "https://fresh-adults-read.loca.lt")
 add_paragraph("demo@darukaa.earth", "Administrator Demo Email: ")
 add_paragraph("Demo@12345", "Administrator Demo Password: ")
 
@@ -137,7 +174,7 @@ add_heading_1("5. Quickstart & Local Setup Instructions")
 
 add_heading_2("Option 1: Docker Compose (Recommended)")
 add_paragraph("1. Clone the repository and copy environment file:")
-add_paragraph("git clone https://github.com/your-username/darukaa-earth.git\ncd darukaa-earth\ncp .env.example .env", bold_prefix="   Commands: ")
+add_paragraph("git clone https://github.com/ahsan-zamil/darukaa-earth.git\ncd darukaa-earth\ncp .env.example .env", bold_prefix="   Commands: ")
 add_paragraph("2. Build and launch all containers:")
 add_paragraph("docker-compose up --build", bold_prefix="   Commands: ")
 add_paragraph("3. Access running services:")
@@ -162,4 +199,4 @@ add_bullet("All site polygon surface areas are computed in geodesic space (WGS84
 add_bullet("If a Mapbox API token is missing, the application renders an inline warning banner while maintaining 100% functionality of all dashboards, tables, and CRUD operations.", "Mapbox Fallback Handling: ")
 
 doc.save("c:/Users/ASUS/Desktop/darukaa-earth/Darukaa_Earth_Submission_Document.docx")
-print("Submission document successfully created!")
+print("Submission document successfully updated with active hyperlinks!")
